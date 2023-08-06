@@ -1,5 +1,5 @@
 <template>
-<section class="h-100 h-custom min-h-content">
+<section class="h-100 h-custom min-h-content landscape-style">
 <div class="container py-5 h-100">
 <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col">
