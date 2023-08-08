@@ -14,11 +14,11 @@
 
                   <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                      <p class="mb-0">Usted tiene {{ $store.state.carto.length }} items en su factura.</p>
+                      <p class="mb-0">Usted tiene {{ $store.state.anotherProducts.length }} items en su factura.</p>
                     </div>
                   </div>
 
-                  <div v-for="item in $store.state.carto" class="card mb-3 shadow-sm border-0" :key="item.id">
+                  <div v-for="item in $store.state.anotherProducts" class="card mb-3 shadow-sm border-0" :key="item.id">
                     <div class="card-body">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-row align-items-center">
@@ -56,11 +56,11 @@
                       <hr class="my-4">
                       <div class="d-flex justify-content-between">
                         <p class="mb-2">Subtotal</p>
-                        <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartoTotal }}</p>
+                        <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.anotherTotal }}</p>
                       </div>
                       <div class="d-flex justify-content-between mb-4">
                         <p class="mb-2">Total</p>
-                        <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartoTotal }}</p>
+                        <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.anotherTotal }}</p>
                       </div>
                       <div class="mb-3">
                         <label for="razonsocial" class="form-label">Razón Social</label>
@@ -287,6 +287,8 @@
     </div>
     <div>
       <pre>{{ receivedData5 }}</pre>
+
+
     </div>
     <div>
       <pre>{{ receivedData7 }}</pre>
@@ -306,7 +308,7 @@ export default{
   components :{CartAddRemove2, PingComponent},
   methods: {
     removeItem(item) {
-      this.$store.commit('addRemoveCarto', {product: item, toAdd: false})
+      this.$store.commit('addRemoveAnotherCart', {product: item, toAdd: false})
     },
     crearFactura() {
       const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/crear?proveedorKey=T1-N392010028-S0-P0&codigoSector=17';
@@ -670,7 +672,7 @@ export default{
   },
   computed: {
     ventas() {
-      return this.$store.state.carto;
+      return this.$store.state.anotherProducts;
     },
     ventasData() {
       const ventasData = [];

@@ -21,17 +21,17 @@ export default{
   methods:{
     async addOrRemove(){
       this.item.qty = 1
-      this.$store.commit('addRemoveCarto',{product:this.item, toAdd:this.toAdd})
+      this.$store.commit('addRemoveAnotherCart',{product:this.item, toAdd:this.toAdd})
       let toastMSG
-      this.toAdd?  toastMSG = 'Añadido a la factura' :  toastMSG = 'Removido de la factura'
+      this.toAdd?  toastMSG = 'Servicio Clínico añadido a factura' :  toastMSG = 'Servicio Clínico removido de factura'
       toast(toastMSG, {
-        autoClose: 1500,
+        autoClose: 1000,
       });
       this.toAdd = !this.toAdd
     }
   },
   mounted(){
-    let cart = this.$store.state.carto
+    let cart = this.$store.state.anotherProducts
     let obj = cart.find(o => o.id === this.product.id)
     if(obj){
       this.toAdd = false

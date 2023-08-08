@@ -9,7 +9,7 @@
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 export default{
-  name:'CartAddRemove',
+  name:'CartAddRemove2',
   props:['product'],
   data(){
     return{
@@ -24,8 +24,8 @@ export default{
         if(this.qty < 10){
           this.qty++
           this.product.qty = this.qty
-          await this.$store.commit('updateCarto',{product:this.product})
-          toast.success('Venta actualizada')
+          await this.$store.commit('updateAnotherCart',{product:this.product})
+          toast.success('Factura actualizada')
         }else{
           toast.warning('Se alcanzó el límite')
         }
@@ -34,8 +34,8 @@ export default{
         if(this.qty > 1){
           this.qty--
           this.product.qty = this.qty
-          await this.$store.commit('updateCarto',{product:this.product})
-          toast.success('Venta actualizada');
+          await this.$store.commit('updateAnotherCart',{product:this.product})
+          toast.success('Factura de Servicios Clínicos actualizada');
         }else{
           toast.warning('Se alcanzó el límite');
         }

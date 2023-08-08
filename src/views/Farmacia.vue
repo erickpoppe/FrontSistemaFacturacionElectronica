@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="container min-h-content py-5 text-center">
     <h3>Ir a emisión de facura</h3>
     <router-link class="nav-link" :class="$route.name == 'Cart'? 'active':''" aria-current="page" :to="{ name: 'Cart' }">

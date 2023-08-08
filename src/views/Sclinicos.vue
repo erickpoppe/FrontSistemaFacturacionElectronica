@@ -3,8 +3,8 @@
     <h3>Ir a emisión de facura</h3>
     <router-link class="nav-link" :class="$route.name == 'Carto'? 'active':''" aria-current="page" :to="{ name: 'Carto' }">
       <i class="bi bi-cart3 h4"></i>
-      <span  v-if=" $store.state.carto.length > 0" class="align-items-center justify-content-center translate-middle badge rounded-pill bg-secondary">
-             {{ $store.state.carto.length }}
+      <span  v-if=" $store.state.anotherProducts.length > 0" class="align-items-center justify-content-center translate-middle badge rounded-pill bg-secondary">
+             {{ $store.state.anotherProducts.length }}
             </span>
     </router-link>
     <div class="row py-lg-5">
