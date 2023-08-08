@@ -25,7 +25,7 @@ export default ({
   },
   async mounted() {
     await this.$store.commit('initialiseStore');
-    await this.$store.commit('inicializarStore');
+    await this.$store.commit('initialiseAnotherStore');
   },
 })
 </script>
