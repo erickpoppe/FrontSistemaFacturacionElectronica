@@ -305,7 +305,6 @@ methods: {
       const headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
       this.receivedData2.data.cabecera.codigoExcepcion = 1;
       this.receivedData2.data.cabecera.cafc = '';
-      this.receivedData2.data.cabecera.leyenda = "Este documento es la Representación Gráfica de un Documento Fiscal Digital emitido fuera de línea, verifique su envío con su proveedor o en la página web www.impuestos.gob.bo.";
       axios.post(url, this.receivedData2, { headers })
           .then(response => {
             this.receivedData5 = response.data;
