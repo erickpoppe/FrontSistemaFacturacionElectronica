@@ -545,11 +545,11 @@ methods: {
   }
 },
   mounted(){
-  console.log(this.ventasData[0].id);
-  console.log(this.ventasData[0].name);
-  console.log(this.ventasData[0].price);
-  console.log(this.ventasData[0].qty);
-  console.log(this.ventasData[0].descripcion);
+  //console.log(this.ventasData[0].id);
+  //console.log(this.ventasData[0].name);
+  //console.log(this.ventasData[0].price);
+  //console.log(this.ventasData[0].qty);
+  //console.log(this.ventasData[0].descripcion);
   this.detalles = this.ventasData.map(() => ({ montoDescuento: 0 }));
 },
 

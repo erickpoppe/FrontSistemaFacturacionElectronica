@@ -665,10 +665,10 @@ export default{
 
 
   mounted(){
-    console.log(this.ventasData[0].id);
-    console.log(this.ventasData[0].name);
-    console.log(this.ventasData[0].price);
-    console.log(this.ventasData[0].qty);
+  //  console.log(this.ventasData[0].id);
+  //  console.log(this.ventasData[0].name);
+  //  console.log(this.ventasData[0].price);
+  //  console.log(this.ventasData[0].qty);
   },
   computed: {
     ventas() {
