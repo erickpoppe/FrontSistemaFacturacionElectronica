@@ -34,7 +34,7 @@
                     </div>
                     <div class="d-flex flex-row align-items-center">
                         <div >
-                            <h5 class="mb-0"><i class="bi bi-currency-dollar"></i>{{ item.price*item.qty }}</h5>
+                            <h5 class="mb-0"><i class="bi bi-currency-dollar"></i>{{ getFormattedTotal(item) }}</h5>
                             <small v-if="item.hasDiscount" class="text-muted text-decoration-line-through"><i class="bi bi-currency-dollar"></i>{{ item.price}}</small>
                         </div>
                         <a role="button" @click="removeItem(item)" class="ms-4" style="color: #cecece;"><i class="bi bi-trash3 h4"></i></a>
@@ -72,11 +72,11 @@
                   <div class="mb-3">
                     <label for="tipoDocumentoIdentidad" class="form-label">Tipo de Documento de Identidad</label>
                     <select id="tipoDocumentoIdentidad" class="form-select" v-model="formData.tipoDocumentoIdentidad">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
+                      <option value="1">Cédula de identidad</option>
+                      <option value="2">Cédula de identidad de extranjero</option>
+                      <option value="3">Pasaporte</option>
+                      <option value="4">Otro documento de identidad</option>
+                      <option value="5">Número de identificación tributaria</option>
                     </select>
                   </div>
                 <div class="mb-3">
@@ -189,6 +189,14 @@
                     Imprimir Factura
                   </button><br><br>
 
+                  <h5>BAJAR XML</h5>
+                  <div class="mb-3">
+                    <label for="bajarxml" class="form-label">Descargar documento XML</label>
+                    <input type="number" class="form-control" id="bajarxml" v-model="bajarxml"></div>
+                  <button type="button"  @click="bajarXML" class="btn btn-info btn-block btn-lg">
+                    Descargar XML
+                  </button><br><br>
+
 
 
                 </div>
@@ -280,7 +288,8 @@ methods: {
 
   enviarFactura(){
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
-    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+    let toastMSG;
     axios.post(url, this.receivedData2, { headers })
         .then(response => {
           this.receivedData5 = response.data;
@@ -293,7 +302,8 @@ methods: {
               autoClose: 2000,
             });
           } else {
-            toast("La factura no fue procesada exitosamente.", {
+            toastMSG = this.receivedData5.messages
+            toast(toastMSG, {
               autoClose: 2000,
             });
           };
@@ -302,7 +312,7 @@ methods: {
   },
   facturarOffline(){
       const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
-      const headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+      const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
       this.receivedData2.data.cabecera.codigoExcepcion = 1;
       this.receivedData2.data.cabecera.cafc = '';
       axios.post(url, this.receivedData2, { headers })
@@ -327,7 +337,7 @@ methods: {
   },
   facturarOfflineCafc(){
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
-    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
     this.receivedData2.data.cabecera.codigoExcepcion = 1;
     this.receivedData2.data.cabecera.cafc = "101FC6CC6CD7E";
     axios.post(url, this.receivedData2, { headers })
@@ -361,7 +371,7 @@ methods: {
             codigo = this.receivedData6.data.cufdEvento.codigoEvento;
             console.log(codigo);
             const url1 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/enviar';
-            const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+            const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
             axios.put(url1, { gestion: 2023, periodo: 8, proveedorKey: "T1-N392010028-S0-P0", codigoSector: 1, codigoEvento:codigo, cafc: "" }, {headers1})
                 .then(responser => {
                   this.receivedData7 = responser.data;
@@ -394,7 +404,7 @@ methods: {
             codigo = this.receivedData6.data.cufdEvento.codigoEvento;
             console.log(codigo);
             const url1 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/enviar';
-            const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+            const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
             axios.put(url1, { gestion: 2023, periodo: 8, proveedorKey: "T1-N392010028-S0-P0", codigoSector: 1, codigoEvento:codigo, cafc: "101FC6CC6CD7E" }, {headers1})
                 .then(responser => {
                   this.receivedData7 = responser.data;
@@ -418,7 +428,7 @@ methods: {
   },
   anularFac() {
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/anular';
-    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json' };
+    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
     let toastMSG;
     axios.put(url, { gestion : 2023, periodo: 8, proveedorKey : "T1-N392010028-S0-P0",  codigoSector: 1,  numeroFactura: this.nroanular, codigoMotivo: this.motivoanular }, { headers })
         .then(response => {
@@ -438,9 +448,30 @@ methods: {
     const dctoTotalValue = parseFloat(dctoTotalInput.value);
 
     this.receivedData2.data.cabecera.descuentoAdicional = dctoTotalValue;
+    this.receivedData2.data.cabecera.descuentoAdicional = Math.round(this.receivedData2.data.cabecera.descuentoAdicional * 100) / 100;
     this.receivedData2.data.cabecera.montoTotal -= dctoTotalValue;
+    this.receivedData2.data.cabecera.montoTotal = Math.round(this.receivedData2.data.cabecera.montoTotal * 100) / 100;
+    if (this.receivedData2.data.cabecera.montoTotal <= 0 ) {
+      toast("El descuento del monto Total es mayor a la suma total o es igual a cero.", {
+        autoClose: 2000,
+      });
+    };
     this.receivedData2.data.cabecera.montoTotalSujetoIva -= dctoTotalValue;
+    this.receivedData2.data.cabecera.montoTotalSujetoIva = Math.round(this.receivedData2.data.cabecera.montoTotalSujetoIva * 100) / 100;
+    if (this.receivedData2.data.cabecera.montoTotalSujetoIva < 0 ) {
+      toast("El descuento del monto Total Sujeto Iva es mayor a la suma total.", {
+        autoClose: 2000,
+      });
+    };
     this.receivedData2.data.cabecera.montoTotalMoneda -= dctoTotalValue;
+    this.receivedData2.data.cabecera.montoTotalMoneda = Math.round(this.receivedData2.data.cabecera.montoTotalMoneda * 100) / 100;
+    if (this.receivedData2.data.cabecera.montoTotalMoneda <= 0 ) {
+      toast("El descuento del monto Total Moneda es mayor a la suma total o es igual a cero.", {
+        autoClose: 2000,
+      });
+    };
+
+
 
     dctoTotalInput.value = '';
 
@@ -456,6 +487,7 @@ methods: {
 
       detalle.montoDescuento = discountValue;
       detalle.subTotal -= discountValue;
+      detalle.subTotal = Math.round(detalle.subTotal * 100) / 100;
     });
 
     const sumSubtotal = this.calculateSumSubtotal(this.receivedData2.data.detalles);
@@ -529,6 +561,18 @@ methods: {
   onUpdateStatus(status) {
     this.networkStatus = status;
   },
+  imprimirFac(){
+    const pdfURL = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/imprimir';
+    const headers = {'accept': 'application/json'};
+    const numeroFactura = this.nroimprimir;
+    const params = { gestion: 2023, periodo: 8, proveedorKey: 'T1-N392010028-S0-P0', codigoSector: 1, numeroFactura: this.nroimprimir };
+    let toastMSG;
+    axios.get(pdfURL, { responseType: 'blob', headers: headers, params: params })
+        .then(response => {
+          const blob = new Blob([response.data], {type: 'application/pdf'});
+          saveAs(blob, `temporary_pdf.pdf`);
+        });
+  },
   especialFac(){
     if (this.formData.nrodocumento == "99001") {
       this.receivedData2.data.cabecera.codigoExcepcion = 1;
@@ -542,6 +586,33 @@ methods: {
       this.receivedData2.data.cabecera.nombreRazonSocial = "Ventas Menores del día";
       this.receivedData2.data.cabecera.codigoTipoDocumentoIdentidad = 5;
     };
+  },
+  bajarXML(){
+    const xmlURL = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/obtener_xml';
+    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+    const numeroFactura = this.bajarxml;
+    let toastMSG;
+    axios.put(xmlURL, { gestion : 2023, periodo: 8, proveedorKey : "T1-N392010028-S0-P0",  codigoSector: 1,  numeroFactura: this.bajarxml }, { headers })
+        .then(response => {
+          this.responseData = response.data;
+          console.log(this.responseData);
+          this.responseData.ok?  toastMSG = 'Se bajó el XML.' :  toastMSG = 'No se pudo bajar el XML.'
+          toast(toastMSG, {
+            autoClose: 2000,
+          });
+          const xmlData = this.responseData.data;
+          const blob = new Blob([xmlData], { type: 'text/xml' });
+          saveAs(blob, `temporary_xml.xml`);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  },
+  getFormattedTotal(item) {
+    const productTotal = item.price * item.qty;
+    const roundedTotal = Math.round(productTotal * 100) / 100;
+
+    return roundedTotal.toFixed(2);
   }
 },
   mounted(){
@@ -580,6 +651,7 @@ data(){
     networkStatus: '',
     dctototal: null,
     imprimir: null,
+    bajarxml: null,
     motivoanular: null,
     formData: {
       razonsocial: '',
