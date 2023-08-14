@@ -440,11 +440,11 @@ export default{
       let toastMSG;
       axios.put(url, {
         gestion: 2023,
-        periodo: 7,
+        periodo: 8,
         proveedorKey: "T1-N392010028-S0-P1",
-        codigoSector: 17,
+        codigoSector: 1,
         numeroFactura: this.nroanular,
-        codigoMotivo: 1
+        codigoMotivo: this.motivoanular
       }, {headers})
           .then(response => {
             this.responseData = response.data;
@@ -609,6 +609,7 @@ export default{
       receivedData6: null,
       receivedData7: null,
       nroanular: null,
+      motivoanular: null,
       formData: {
         razonsocial: '',
         nrodocumento: '',
