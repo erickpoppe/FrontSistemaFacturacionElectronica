@@ -7,7 +7,8 @@ import Farmacia from "../views/Farmacia.vue";
 import Sclinicos from "../views/Sclinicos.vue";
 import Carto from "../views/Carto.vue";
 import Detalles from "../views/Detalles.vue";
-import Productos from "../views/Productos.vue"
+import Productos from "../views/Productos.vue";
+import Datos from "../views/Datos.vue";
 const routes = [
     {
         path:'/',
@@ -55,6 +56,11 @@ const routes = [
                 path:'/productos',
                 name:'Productos',
                 component:Productos
+            },
+            {
+                path:'/datos',
+                name:'Datos',
+                component:Datos
             }
         ]
     },

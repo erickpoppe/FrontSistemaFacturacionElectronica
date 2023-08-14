@@ -536,6 +536,10 @@ export default{
             toast(toastMSG, {
               autoClose: 2000,
             });
+            toastMSG = this.responseData.messages;
+            toast(toastMSG, {
+              autoClose: 2000,
+            });
           })
 
           .catch(error => {

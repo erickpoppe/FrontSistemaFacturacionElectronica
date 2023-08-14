@@ -21,7 +21,7 @@
             <div v-for="item in $store.state.cart" class="card mb-3 shadow-sm border-0" :key="item.id">
                 <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-row align-items-  center">
                         <div></div>
                         <div class="ms-3">
                             <p>{{ item.name }}</p>
@@ -61,14 +61,14 @@
                     <p class="mb-2">Total</p>
                     <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartTotal }}</p>
                 </div>
-                <div class="mb-3">
-                  <label for="razonsocial" class="form-label">Razón Social</label>
-                  <input type="text" class="form-control" id="razonsocial" v-model="formData.razonsocial">
-                </div>
-                <div class="mb-3">
-                  <label for="nrodocumento" class="form-label">Numero Documento</label>
-                  <input type="text" class="form-control" id="nrodocumento" v-model="formData.nrodocumento">
-                </div>
+                  <div class="mb-3">
+                    <label for="razonsocial" class="form-label">Razón Social</label>
+                    <input type="text" class="form-control" id="razonsocial" v-model="formData.razonsocial">
+                  </div>
+                  <div class="mb-3">
+                    <label for="nrodocumento" class="form-label">Numero Documento</label>
+                    <input type="text" class="form-control" id="nrodocumento" v-model="formData.nrodocumento">
+                  </div>
                   <div class="mb-3">
                     <label for="tipoDocumentoIdentidad" class="form-label">Tipo de Documento de Identidad</label>
                     <select id="tipoDocumentoIdentidad" class="form-select" v-model="formData.tipoDocumentoIdentidad">
@@ -79,22 +79,22 @@
                       <option value="5">Número de identificación tributaria</option>
                     </select>
                   </div>
-                <div class="mb-3">
-                  <label for="numerofactura" class="form-label">Numero Factura</label>
-                  <input type="number" class="form-control" id="numerofactura" v-model="formData.numerofactura">
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Codigo de cliente</label>
-                  <input type="email" class="form-control" id="email" v-model="formData.email">
-                </div>
-                <div>
-                  <label for="complemento" class="form-label">Complemento</label>
-                  <input type="text" class="form-control" id="complemento" v-model="formData.complemento">
-                </div><br><br>
+                  <div class="mb-3">
+                    <label for="numerofactura" class="form-label">Numero Factura</label>
+                    <input type="number" class="form-control" id="numerofactura" v-model="formData.numerofactura">
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Codigo de cliente</label>
+                    <input type="email" class="form-control" id="email" v-model="formData.email">
+                  </div>
+                  <div>
+                    <label for="complemento" class="form-label">Complemento</label>
+                    <input type="text" class="form-control" id="complemento" v-model="formData.complemento">
+                  </div><br><br>
 
-                <button type="button"  @click="crearFactura" class="btn btn-info btn-block btn-lg">
+                  <button type="button"  @click="crearFactura" class="btn btn-info btn-block btn-lg">
                     Crear Factura
-                </button><br><br>
+                  </button><br><br>
 
                   <button type="button"  @click="procesarFactura" class="btn btn-info btn-block btn-lg">
                     Procesar Factura
@@ -152,10 +152,10 @@
                     Pago con tarjeta
                   </button><br><br>
                   <div class="mb-3">
-                  <h5>PAGO POR TRANSFERENCIA BANCARIA</h5>
-                  <button type="button"  @click="pagoTransferencia" class="btn btn-info btn-block btn-lg">
-                    Pago por transferencia bancaria
-                  </button><br><br> </div>
+                    <h5>PAGO POR TRANSFERENCIA BANCARIA</h5>
+                    <button type="button"  @click="pagoTransferencia" class="btn btn-info btn-block btn-lg">
+                      Pago por transferencia bancaria
+                    </button><br><br> </div>
 
                   <h5>ANULAR FACTURA</h5>
                   <div class="mb-3">
@@ -183,8 +183,8 @@
 
                   <h5>IMPRIMIR FACTURA</h5>
                   <div class="mb-3">
-                    <label for="imprimir" class="form-label">Numero de Factura a Imprimir</label>
-                    <input type="number" class="form-control" id="imprimir" v-model="imprimir"></div>
+                    <label for="nroimprimir" class="form-label">Numero de Factura a Imprimir</label>
+                    <input type="number" class="form-control" id="nroimprimir" v-model="nroimprimir"></div>
                   <button type="button"  @click="imprimirFac" class="btn btn-info btn-block btn-lg">
                     Imprimir Factura
                   </button><br><br>
@@ -197,9 +197,20 @@
                     Descargar XML
                   </button><br><br>
 
+                  <div class="mb-3">
+                    <label for="codmetpago" class="form-label">Tipo de método de pago</label>
+                    <select id="codmetpago" class="form-select" v-model="codmetpago">
+                      <option value="1">Efectivo</option>
+                      <option value="2">Tarjeta</option>
+                      <option value="7">Transferencia bancaria</option>
+                      <option value="10">Efectivo y Tarjeta</option>
+                      <option value="27">Gift Card</option>
+                      <option value="35">Efectivo y Gift Card</option>
+                    </select>
+                  </div>
 
+                  </div>
 
-                </div>
             </div>
 
             </div>
@@ -243,7 +254,7 @@ methods: {
     axios.put(url, null, {headers})
         .then(response => {
           this.receivedData = response.data;
-          this.receivedData.ok ? toastMSG = 'Se creó la factura.' : toastMSG = 'No se creó la factura.'
+          this.receivedData.ok ? toastMSG = 'Estructura de factura creada.' : toastMSG = 'No se creó la factura.'
           toast(toastMSG, {
             autoClose: 1500,
           });
@@ -251,6 +262,8 @@ methods: {
         .catch(error => {
           console.error(error);
         });
+
+
   },
   replicateDetalles(venta) {
     const detallesCopy = { ...this.receivedData.data.detalles[0] };
@@ -290,6 +303,7 @@ methods: {
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
     const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
     let toastMSG;
+    this.receivedData2.data.cabecera.codigoMetodoPago = this.codmetpago;
     axios.post(url, this.receivedData2, { headers })
         .then(response => {
           this.receivedData5 = response.data;
@@ -313,6 +327,7 @@ methods: {
   facturarOffline(){
       const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
       const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+      this.receivedData2.data.cabecera.codigoMetodoPago = this.codmetpago;
       this.receivedData2.data.cabecera.codigoExcepcion = 1;
       this.receivedData2.data.cabecera.cafc = '';
       axios.post(url, this.receivedData2, { headers })
@@ -338,6 +353,7 @@ methods: {
   facturarOfflineCafc(){
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
     const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+    this.receivedData2.data.cabecera.codigoMetodoPago = this.codmetpago;
     this.receivedData2.data.cabecera.codigoExcepcion = 1;
     this.receivedData2.data.cabecera.cafc = "101FC6CC6CD7E";
     axios.post(url, this.receivedData2, { headers })
@@ -435,7 +451,11 @@ methods: {
           this.responseData = response.data;
           this.responseData.ok?  toastMSG = 'Se anuló la factura.' :  toastMSG = 'No se pudo anular la factura.'
           toast(toastMSG, {
-            autoClose: 2000,
+            autoClose: 1500,
+          });
+          toastMSG = this.responseData.messages;
+          toast(toastMSG, {
+            autoClose: 1500,
           });
         })
 
@@ -570,7 +590,7 @@ methods: {
     axios.get(pdfURL, { responseType: 'blob', headers: headers, params: params })
         .then(response => {
           const blob = new Blob([response.data], {type: 'application/pdf'});
-          saveAs(blob, `temporary_pdf.pdf`);
+          saveAs(blob, `Fac_${numeroFactura}_pdf.pdf`);
         });
   },
   especialFac(){
@@ -650,9 +670,10 @@ data(){
     discounts: [],
     networkStatus: '',
     dctototal: null,
-    imprimir: null,
+    nroimprimir: null,
     bajarxml: null,
     motivoanular: null,
+    codmetpago: null,
     formData: {
       razonsocial: '',
       nrodocumento: '',
