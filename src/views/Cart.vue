@@ -94,7 +94,7 @@
                   </div><br><br>
 
                   <button type="button"  @click="facturarAhora" class="btn btn-info btn-block btn-lg">
-                    Facturar Ahora
+                    Facturar Sin Descuento
                   </button><br><br>
 
                   <button type="button"  @click="procesarFactura" class="btn btn-info btn-block btn-lg">
