@@ -61,6 +61,7 @@
                     <p class="mb-2">Total</p>
                     <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartTotal }}</p>
                 </div>
+
                   <div class="mb-3">
                     <label for="razonsocial" class="form-label">Razón Social</label>
                     <input type="text" class="form-control" id="razonsocial" v-model="formData.razonsocial">
@@ -92,122 +93,14 @@
                     <input type="text" class="form-control" id="complemento" v-model="formData.complemento">
                   </div><br><br>
 
-                  <button type="button"  @click="crearFactura" class="btn btn-info btn-block btn-lg">
-                    Crear Factura
+                  <button type="button"  @click="facturarAhora" class="btn btn-info btn-block btn-lg">
+                    Facturar Ahora
                   </button><br><br>
 
                   <button type="button"  @click="procesarFactura" class="btn btn-info btn-block btn-lg">
-                    Procesar Factura
-                  </button><br><br>
-                  <button type="button"  @click="enviarFactura" class="btn btn-info btn-block btn-lg">
-                    Enviar Factura
-                  </button><br><br>
-                  <button type="button"  @click="facturarOffline" class="btn btn-info btn-block btn-lg">
-                    Facturar Offline
-                  </button><br><br>
-                  <button type="button"  @click="facturarOfflineCafc" class="btn btn-info btn-block btn-lg">
-                    Facturar Offline con CAFC
-                  </button><br><br>
-                  <button type="button"  @click="enviarPaquete" class="btn btn-info btn-block btn-lg">
-                    Enviar Paquete
-                  </button><br><br>
-                  <button type="button"  @click="enviarPaqueteCafc" class="btn btn-info btn-block btn-lg">
-                    Enviar Paquete con CAFC
-                  </button><br><br>
-                  <div v-if="this.receivedData2">
-                    <div v-for="(detalle, index) in receivedData2.data.detalles" :key="index">
-                      <div class="mb-3">
-                        <label :for="'discount_' + index" class="form-label">Descuento para item {{ index + 1 }}</label>
-                        <input
-                            :id="'discount_' + index"
-                            type="number"
-                            class="form-control"
-                            v-model="detalle.montoDescuento"
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button"  @click="aplicarDctos" class="btn btn-info btn-block btn-lg">
-                    Aplicar Descuentos
-                  </button><br><br>
-                  <h5>DESCUENTO ADICIONAL SOBRE EL TOTAL</h5>
-                  <div class="mb-3">
-                    <label for="dctototal" class="form-label">Descuento adicional sobre el total</label>
-                    <input type="number" class="form-control" id="dctototal" v-model="dctototal"></div>
-                  <button type="button"  @click="dctoTotal" class="btn btn-info btn-block btn-lg">
-                    Descuento sobre el total
-                  </button><br><br>
-                  <h5>GIFT CARD</h5>
-                  <div class="mb-3">
-                    <label for="giftcard" class="form-label">Monto de Giftcard</label>
-                    <input type="number" class="form-control" id="giftcard" v-model="giftcard"></div>
-                  <button type="button"  @click="giftCard" class="btn btn-info btn-block btn-lg">
-                    Aplicar valor del GiftCard
-                  </button>
-                  <h5>PAGO CON TARJETA</h5>
-                  <div class="mb-3">
-                    <label for="tarjeta" class="form-label">Número de tarjeta:</label>
-                    <input id="tarjeta" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx"></div>
-                  <button type="button"  @click="pagoTarjeta" class="btn btn-info btn-block btn-lg">
-                    Pago con tarjeta
-                  </button><br><br>
-                  <div class="mb-3">
-                    <h5>PAGO POR TRANSFERENCIA BANCARIA</h5>
-                    <button type="button"  @click="pagoTransferencia" class="btn btn-info btn-block btn-lg">
-                      Pago por transferencia bancaria
-                    </button><br><br> </div>
-
-                  <h5>ANULAR FACTURA</h5>
-                  <div class="mb-3">
-                    <label for="nroanular" class="form-label">Numero de Factura a Anular</label>
-                    <input type="number" class="form-control" id="nroanular" v-model="nroanular"></div>
-                  <button type="button"  @click="anularFac" class="btn btn-info btn-block btn-lg">
-                    Anular Factura
-                  </button><br><br>
-                  <div class="mb-3">
-                    <label for="motivoanular" class="form-label">Motivo de Anulación</label>
-                    <select id="motivoanular" class="form-select" v-model="motivoanular">
-                      <option value="1">FACTURA MAL EMITIDA</option>
-                      <option value="2">NOTA DE CREDITO-DEBITO MAL EMITIDA</option>
-                      <option value="3">DATOS DE EMISION INCORRECTOS</option>
-                      <option value="4">FACTURA O NOTA DE CREDITO-DEBITO DEVUELTA</option>
-                    </select>
-                  </div>
-
-                  <h5>FACTURACIÓN ESPECIAL</h5>
-                  <div class="mb-3">
-                    <label for="especial" class="form-label">Código Especial</label></div>
-                  <button type="button"  @click="especialFac" class="btn btn-info btn-block btn-lg">
-                    Especial
+                    Hacer Descuentos
                   </button><br><br>
 
-                  <h5>IMPRIMIR FACTURA</h5>
-                  <div class="mb-3">
-                    <label for="nroimprimir" class="form-label">Numero de Factura a Imprimir</label>
-                    <input type="number" class="form-control" id="nroimprimir" v-model="nroimprimir"></div>
-                  <button type="button"  @click="imprimirFac" class="btn btn-info btn-block btn-lg">
-                    Imprimir Factura
-                  </button><br><br>
-
-                  <h5>BAJAR XML</h5>
-                  <div class="mb-3">
-                    <label for="bajarxml" class="form-label">Descargar documento XML</label>
-                    <input type="number" class="form-control" id="bajarxml" v-model="bajarxml"></div>
-                  <button type="button"  @click="bajarXML" class="btn btn-info btn-block btn-lg">
-                    Descargar XML
-                  </button><br><br>
-
-                  <div class="mb-3">
-                    <label for="codmetpago" class="form-label">Tipo de método de pago</label>
-                    <select id="codmetpago" class="form-select" v-model="codmetpago">
-                      <option value="1">Efectivo</option>
-                      <option value="2">Tarjeta</option>
-                      <option value="7">Transferencia bancaria</option>
-                      <option value="10">Efectivo y Tarjeta</option>
-                      <option value="27">Gift Card</option>
-                      <option value="35">Efectivo y Gift Card</option>
-                    </select>
-                  </div>
 
                   </div>
 
@@ -254,7 +147,7 @@ methods: {
     axios.put(url, null, {headers})
         .then(response => {
           this.receivedData = response.data;
-          this.receivedData.ok ? toastMSG = 'Estructura de factura creada.' : toastMSG = 'No se creó la factura.'
+          this.receivedData.ok ? toastMSG = 'Estructura de factura creada.' : toastMSG = 'No se creó la estructura de la factura.'
           toast(toastMSG, {
             autoClose: 1500,
           });
@@ -633,6 +526,61 @@ methods: {
     const roundedTotal = Math.round(productTotal * 100) / 100;
 
     return roundedTotal.toFixed(2);
+  },
+  facturarAhora(){
+    const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/crear?proveedorKey=T1-N392010028-S0-P0&codigoSector=1';
+    const headers = {'accept': 'application/json'};
+    let toastMSG;
+    axios.put(url, null, {headers})
+        .then(response => {
+          this.receivedData = response.data;
+          this.receivedData.ok ? toastMSG = 'Estructura de factura creada.' : toastMSG = 'No se creó la estructura de la factura.'
+          toast(toastMSG, {
+            autoClose: 1500,
+          });
+          this.receivedData.data.detalles[0].actividadEconomica = 477311;
+          this.receivedData.data.detalles[0].codigoProductoSin = 35270;
+          const replicatedDetalles = this.ventasData.map(this.replicateDetalles);
+          const updatedData = {...this.receivedData.data, detalles: replicatedDetalles};
+          this.receivedData2 = {...this.receivedData, data: updatedData};
+          this.receivedData2.data.cabecera.nombreRazonSocial = this.formData.razonsocial;
+          this.receivedData2.data.cabecera.numeroDocumento = this.formData.nrodocumento;
+          this.receivedData2.data.cabecera.numeroFactura = this.formData.numerofactura;
+          this.receivedData2.data.cabecera.codigoCliente = this.formData.email;
+          this.receivedData2.data.cabecera.complemento = this.formData.complemento;
+          this.receivedData2.data.cabecera.codigoTipoDocumentoIdentidad = this.formData.tipoDocumentoIdentidad;
+          const sumSubtotal = this.calculateSumSubtotal(this.receivedData2.data.detalles);
+
+          this.receivedData2.data.cabecera.montoTotal = sumSubtotal;
+          this.receivedData2.data.cabecera.montoTotalSujetoIva = sumSubtotal;
+          this.receivedData2.data.cabecera.montoTotalMoneda = sumSubtotal;
+          const url2 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
+          const headers2 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+          let toastMSG2;
+          this.receivedData2.data.cabecera.codigoMetodoPago = 1;
+          axios.post(url2, this.receivedData2, { headers2 })
+              .then(response => {
+                this.receivedData5 = response.data;
+                this.formData.razonsocial = '';
+                this.formData.nrodocumento = '';
+                this.formData.numerofactura = null;
+                this.formData.email = '';
+                if(this.receivedData5.data.cabecera.codigoEstado == 908) {
+                  toast("La factura fue procesada exitosamente 908", {
+                    autoClose: 2000,
+                  });
+                } else {
+                  toastMSG2 = this.receivedData5.messages
+                  toast(toastMSG2, {
+                    autoClose: 2000,
+                  });
+                };
+
+              });
+        })
+        .catch(error => {
+          console.error(error);
+        });
   }
 },
   mounted(){
