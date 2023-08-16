@@ -34,16 +34,16 @@
   </div>
   <div>
     <p>
-      <h4>Fecha de vigencia CUIS sucursal 0: {{ vigenciacuis }}</h4>
+      <h4>Fecha de vigencia CUIS Punto de Venta 0: {{ vigenciacuis }}</h4>
     </p>
     <p>
-      <h4>Fecha de vigencia CUFD sucursal 0:  {{ vigenciacufd }}</h4>
+      <h4>Fecha de vigencia CUFD Punto de Venta 0:  {{ vigenciacufd }}</h4>
     </p>
     <p>
-      <h4>Fecha de vigencia CUIS sucursal 1: {{ vigenciacuis1 }}</h4>
+      <h4>Fecha de vigencia CUIS Punto de Venta 1: {{ vigenciacuis1 }}</h4>
     </p>
     <p>
-      <h4>Fecha de vigencia CUFD sucursal 1:  {{ vigenciacufd1 }}</h4>
+      <h4>Fecha de vigencia CUFD Punto de Venta 1:  {{ vigenciacufd1 }}</h4>
     </p>
   </div>
 </template>
@@ -70,25 +70,25 @@ export default {
       vigenciacufd1: '',
       cards: [
         {
-          title: "Obtener CUIS Sucursal 0",
+          title: "Obtener CUIS Punto de Venta 0",
           content: "Renovar el CUIS para facturación",
           buttonText: "Renovar el CUIS",
           buttonAction: this.handleButton1Click
         },
         {
-          title: "Obtener CUFD Sucursal 0",
+          title: "Obtener CUFD Punto de Venta 0",
           content: "Renovar el CUFD para facturación",
           buttonText: "Obtener CUFD",
           buttonAction: this.handleButton2Click
         },
         {
-          title: "Facturacion online sucursal 0",
+          title: "Facturacion online Punto de Venta 0",
           content: "Pasar a modo de facturación con conexión",
           buttonText: "Facturación Online",
           buttonAction: this.handleButton3Click
         },
         {
-          title: "Facturación offline sucursal 0",
+          title: "Facturación offline Punto de Venta 0",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 1",
           buttonAction: this.handleButton3AClick
@@ -100,25 +100,25 @@ export default {
           buttonAction: this.handleButton4Click
         },
         {
-          title: "Obtener CUIS Sucursal 1",
+          title: "Obtener CUIS Punto de Venta 1",
           content: "Renovar el CUIS para facturación",
           buttonText: "Renovar el CUIS",
           buttonAction: this.handleButton5Click
         },
         {
-          title: "Obtener CUFD Sucursal 1",
+          title: "Obtener CUFD Punto de Venta 1",
           content: "Renovar el CUFD para facturación",
           buttonText: "Renovar el CUIS",
           buttonAction: this.handleButton6Click
         },
         {
-          title: "Facturacion online sucursal 1",
+          title: "Facturacion online Punto de Venta 1",
           content: "Pasar a modo de facturación con conexión",
           buttonText: "Facturación Online",
           buttonAction: this.handleButton7Click
         },
         {
-          title: "Facturación offline sucursal 1",
+          title: "Facturación offline Punto de Venta 1",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 1",
           buttonAction: this.handleButton8Click
@@ -130,73 +130,49 @@ export default {
           buttonAction: this.handleButton9Click
         },
         {
-          title: "Facturación offline sucursal 0",
+          title: "Facturación offline Punto de Venta 0",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 2",
           buttonAction: this.handleButton10Click
         },
         {
-          title: "Facturación offline sucursal 1",
+          title: "Facturación offline Punto de Venta 1",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 2",
           buttonAction: this.handleButton11Click
         },
         {
-          title: "Facturación offline sucursal 0",
-          content: "Pasar a modo de facturación sin conexión",
-          buttonText: "Facturación Offline causa 3",
-          buttonAction: this.handleButton12Click
-        },
-        {
-          title: "Facturación offline sucursal 1",
-          content: "Pasar a modo de facturación sin conexión",
-          buttonText: "Facturación Offline causa 3",
-          buttonAction: this.handleButton13Click
-        },
-        {
-          title: "Facturación offline sucursal 0",
-          content: "Pasar a modo de facturación sin conexión",
-          buttonText: "Facturación Offline causa 4",
-          buttonAction: this.handleButton14Click
-        },
-        {
-          title: "Facturación offline sucursal 1",
-          content: "Pasar a modo de facturación sin conexión",
-          buttonText: "Facturación Offline causa 4",
-          buttonAction: this.handleButton15Click
-        },
-        {
-          title: "Facturación offline sucursal 0",
+          title: "Facturación offline Punto de Venta 0",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 5",
           buttonAction: this.handleButton16Click
         },
         {
-          title: "Facturación offline sucursal 1",
+          title: "Facturación offline Punto de Venta 1",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 5",
           buttonAction: this.handleButton17Click
         },
         {
-          title: "Facturación offline sucursal 0",
+          title: "Facturación offline Punto de Venta 0",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 6",
           buttonAction: this.handleButton18Click
         },
         {
-          title: "Facturación offline sucursal 1",
+          title: "Facturación offline Punto de Venta 1",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 6",
           buttonAction: this.handleButton19Click
         },
         {
-          title: "Facturación offline sucursal 0",
+          title: "Facturación offline Punto de Venta 0",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 7",
           buttonAction: this.handleButton20Click
         },
         {
-          title: "Facturación offline sucursal 1",
+          title: "Facturación offline Punto de Venta 1",
           content: "Pasar a modo de facturación sin conexión",
           buttonText: "Facturación Offline causa 7",
           buttonAction: this.handleButton21Click

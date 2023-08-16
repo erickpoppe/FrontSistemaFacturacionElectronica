@@ -1,8 +1,5 @@
 <template>
 
-  <router-link class="nav-link" :class="$route.name == 'Farmacia'? 'active':''" aria-current="page" :to="{ name: 'Farmacia' }">
-    <i class="bi bi-cart3 h4">FARMACIA</i>
-  </router-link>
   <router-link class="nav-link" :class="$route.name == 'Sclinicos'? 'active':''" aria-current="page" :to="{ name: 'Sclinicos' }">
     <i class="bi bi-cart3 h4">SERVICIOS CLÍNICOS</i>
   </router-link>
@@ -11,6 +8,9 @@
   </router-link>
   <router-link class="nav-link" :class="$route.name == 'Productos'? 'active':''" aria-current="page" :to="{ name: 'Productos' }">
     <i class="bi bi-cart3 h4">PRODUCTOS</i>
+  </router-link>
+  <router-link class="nav-link" :class="$route.name == 'Login'? 'active':''" aria-current="page" :to="{ name: 'Login' }">
+    <i class="bi bi-cart3 h4">LOGIN FARMACIA</i>
   </router-link>
   <div id="app">
     <PingComponent @update-status="onUpdateStatus"   />

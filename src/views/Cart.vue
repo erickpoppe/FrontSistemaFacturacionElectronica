@@ -34,15 +34,26 @@
                     </div>
                     <div class="d-flex flex-row align-items-center">
                         <div >
-                            <h5 class="mb-0"><i class="bi bi-currency-dollar"></i>{{ getFormattedTotal(item) }}</h5>
-                            <small v-if="item.hasDiscount" class="text-muted text-decoration-line-through"><i class="bi bi-currency-dollar"></i>{{ item.price}}</small>
+                            <h5 class="mb-0"><i>Bs. </i>{{ getFormattedTotal(item) }}</h5>
+                            <small v-if="item.hasDiscount" class="text-muted text-decoration-line-through"><i>Bs. </i>{{ item.price}}</small>
                         </div>
                         <a role="button" @click="removeItem(item)" class="ms-4" style="color: #cecece;"><i class="bi bi-trash3 h4"></i></a>
                     </div>
                 </div>
                 </div>
             </div>
-
+              <h5>PAGO CON TARJETA</h5>
+              <div class="mb-3">
+                <label for="tarjeta" class="form-label">Número de tarjeta:</label>
+                <input id="tarjeta" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx"></div>
+              <button type="button"  @click="pagoTarjeta" class="btn btn-info btn-block btn-lg">
+                Pago con tarjeta
+              </button><br><br>
+              <div class="mb-3">
+                <h5>PAGO POR TRANSFERENCIA BANCARIA</h5>
+                <button type="button"  @click="pagoTransferencia" class="btn btn-info btn-block btn-lg">
+                  Pago por transferencia bancaria
+                </button><br><br> </div>
             </div>
             <div class="col-lg-5">
 
@@ -55,11 +66,11 @@
                 <hr class="my-4">
                 <div class="d-flex justify-content-between">
                     <p class="mb-2">Subtotal</p>
-                    <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartTotal }}</p>
+                    <p class="mb-2"><i>Bs. </i>{{ $store.state.cartTotal }}</p>
                 </div>
                 <div class="d-flex justify-content-between mb-4">
                     <p class="mb-2">Total</p>
-                    <p class="mb-2"><i class="bi bi-currency-dollar"></i>{{ $store.state.cartTotal }}</p>
+                    <p class="mb-2"><i>Bs. </i>{{ $store.state.cartTotal }}</p>
                 </div>
 
                   <div class="mb-3">
@@ -97,12 +108,52 @@
                     Facturar Sin Descuento
                   </button><br><br>
 
-                  <button type="button"  @click="procesarFactura" class="btn btn-info btn-block btn-lg">
-                    Hacer Descuentos
+                  <div v-if="this.receivedData2">
+                    <div v-for="(detalle, index) in receivedData2.data.detalles" :key="index">
+                      <div class="mb-3">
+                        <label :for="'discount_' + index" class="form-label">Descuento para item {{ index + 1 }}</label>
+                        <input
+                            :id="'discount_' + index"
+                            type="number"
+                            class="form-control"
+                            v-model="detalle.montoDescuento"
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="button"  @click="procesarDescuentos" class="btn btn-info btn-block btn-lg">
+                    Escribir Descuentos
+                  </button><br><br>
+                  <button type="button"  @click="aplicarDctos" class="btn btn-info btn-block btn-lg">
+                    Aplicar Descuentos
                   </button><br><br>
 
+                  <h5>DESCUENTO ADICIONAL SOBRE EL TOTAL</h5>
+                  <div class="mb-3">
+                    <label for="dctototal" class="form-label">Descuento adicional sobre el total</label>
+                    <input type="number" class="form-control" id="dctototal" v-model="dctototal"></div>
+                  <button type="button"  @click="dctoTotal" class="btn btn-info btn-block btn-lg">
+                    Descuento sobre el total
+                  </button><br><br>
 
-                  </div>
+                  <button type="button"  @click="facturarAhora" class="btn btn-info btn-block btn-lg">
+                    Facturar con Descuentos
+                  </button><br><br>
+
+                  <button type="button"  @click="facturarOffline" class="btn btn-info btn-block btn-lg">
+                    Facturar Offline
+                  </button><br><br>
+
+                  <button type="button"  @click="facturarOfflineCafc" class="btn btn-info btn-block btn-lg">
+                    Facturar Offline CAFC
+                   </button>
+
+
+
+
+
+                </div>
 
             </div>
 
@@ -194,9 +245,8 @@ methods: {
 
   enviarFactura(){
     const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
-    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+    const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8'};
     let toastMSG;
-    this.receivedData2.data.cabecera.codigoMetodoPago = this.codmetpago;
     axios.post(url, this.receivedData2, { headers })
         .then(response => {
           this.receivedData5 = response.data;
@@ -220,7 +270,7 @@ methods: {
   facturarOffline(){
       const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
       const headers = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
-      this.receivedData2.data.cabecera.codigoMetodoPago = this.codmetpago;
+      this.receivedData2.data.cabecera.codigoMetodoPago = 1;
       this.receivedData2.data.cabecera.codigoExcepcion = 1;
       this.receivedData2.data.cabecera.cafc = '';
       axios.post(url, this.receivedData2, { headers })
@@ -538,24 +588,25 @@ methods: {
           toast(toastMSG, {
             autoClose: 1500,
           });
-          this.receivedData.data.detalles[0].actividadEconomica = 477311;
-          this.receivedData.data.detalles[0].codigoProductoSin = 35270;
-          const replicatedDetalles = this.ventasData.map(this.replicateDetalles);
-          const updatedData = {...this.receivedData.data, detalles: replicatedDetalles};
-          this.receivedData2 = {...this.receivedData, data: updatedData};
-          this.receivedData2.data.cabecera.nombreRazonSocial = this.formData.razonsocial;
-          this.receivedData2.data.cabecera.numeroDocumento = this.formData.nrodocumento;
-          this.receivedData2.data.cabecera.numeroFactura = this.formData.numerofactura;
-          this.receivedData2.data.cabecera.codigoCliente = this.formData.email;
-          this.receivedData2.data.cabecera.complemento = this.formData.complemento;
-          this.receivedData2.data.cabecera.codigoTipoDocumentoIdentidad = this.formData.tipoDocumentoIdentidad;
-          const sumSubtotal = this.calculateSumSubtotal(this.receivedData2.data.detalles);
+          if (this.receivedData2 == null) {
+            this.receivedData.data.detalles[0].actividadEconomica = 477311;
+            this.receivedData.data.detalles[0].codigoProductoSin = 35270;
+            const replicatedDetalles = this.ventasData.map(this.replicateDetalles);
+            const updatedData = {...this.receivedData.data, detalles: replicatedDetalles};
+            this.receivedData2 = {...this.receivedData, data: updatedData};
+            this.receivedData2.data.cabecera.nombreRazonSocial = this.formData.razonsocial;
+            this.receivedData2.data.cabecera.numeroDocumento = this.formData.nrodocumento;
+            this.receivedData2.data.cabecera.codigoCliente = this.formData.email;
+            this.receivedData2.data.cabecera.complemento = this.formData.complemento;
+            this.receivedData2.data.cabecera.codigoTipoDocumentoIdentidad = this.formData.tipoDocumentoIdentidad;
+            const sumSubtotal = this.calculateSumSubtotal(this.receivedData2.data.detalles);
 
-          this.receivedData2.data.cabecera.montoTotal = sumSubtotal;
-          this.receivedData2.data.cabecera.montoTotalSujetoIva = sumSubtotal;
-          this.receivedData2.data.cabecera.montoTotalMoneda = sumSubtotal;
+            this.receivedData2.data.cabecera.montoTotal = sumSubtotal;
+            this.receivedData2.data.cabecera.montoTotalSujetoIva = sumSubtotal;
+            this.receivedData2.data.cabecera.montoTotalMoneda = sumSubtotal;
+          };
           const url2 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
-          const headers2 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+          const headers2 = { 'accept': 'application/json', 'Content-Type': 'application/json' };
           let toastMSG2;
           this.receivedData2.data.cabecera.codigoMetodoPago = 1;
           axios.post(url2, this.receivedData2, { headers2 })
@@ -563,7 +614,6 @@ methods: {
                 this.receivedData5 = response.data;
                 this.formData.razonsocial = '';
                 this.formData.nrodocumento = '';
-                this.formData.numerofactura = null;
                 this.formData.email = '';
                 if(this.receivedData5.data.cabecera.codigoEstado == 908) {
                   toast("La factura fue procesada exitosamente 908", {
@@ -580,6 +630,65 @@ methods: {
         })
         .catch(error => {
           console.error(error);
+        });
+
+  },
+  procesarDescuentos(){
+    const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/crear?proveedorKey=T1-N392010028-S0-P0&codigoSector=1';
+    const headers = {'accept': 'application/json'};
+    let toastMSG;
+    axios.put(url, null, {headers})
+        .then(response => {
+          this.receivedData = response.data;
+          this.receivedData.ok ? toastMSG = 'Estructura de factura creada.' : toastMSG = 'No se creó la estructura de la factura.'
+          toast(toastMSG, {
+            autoClose: 1500,
+          });
+          this.receivedData.data.detalles[0].actividadEconomica = 477311;
+          this.receivedData.data.detalles[0].codigoProductoSin = 35270;
+          const replicatedDetalles = this.ventasData.map(this.replicateDetalles);
+          const updatedData = {...this.receivedData.data, detalles: replicatedDetalles};
+          this.receivedData2 = {...this.receivedData, data: updatedData};
+          this.receivedData2.data.cabecera.nombreRazonSocial = this.formData.razonsocial;
+          this.receivedData2.data.cabecera.numeroDocumento = this.formData.nrodocumento;
+          this.receivedData2.data.cabecera.codigoCliente = this.formData.email;
+          this.receivedData2.data.cabecera.complemento = this.formData.complemento;
+          this.receivedData2.data.cabecera.codigoTipoDocumentoIdentidad = this.formData.tipoDocumentoIdentidad;
+        });
+  },
+  enviarFacturaOtro(){
+    const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/crear?proveedorKey=T1-N392010028-S0-P0&codigoSector=1';
+    const headers = {'accept': 'application/json'};
+    let toastMSG;
+    axios.put(url, null, {headers})
+        .then(response => {
+          this.receivedData10 = response.data;
+          this.receivedData10.ok ? toastMSG = 'Se va a facturar con descuentos.' : toastMSG = 'No se va a facturar con descuentos.'
+          toast(toastMSG, {
+            autoClose: 1500,
+          });
+          const url2 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
+          const headers2 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+          let toastMSG2;
+          this.receivedData2.data.cabecera.codigoMetodoPago = 1;
+          axios.post(url2, this.receivedData2, { headers2 })
+              .then(response => {
+                this.receivedData5 = response.data;
+                this.formData.razonsocial = '';
+                this.formData.nrodocumento = '';
+                this.formData.email = '';
+                if(this.receivedData5.data.cabecera.codigoEstado == 908) {
+                  toast("La factura fue procesada exitosamente 908", {
+                    autoClose: 2000,
+                  });
+                } else {
+                  toastMSG2 = this.receivedData5.messages
+                  toast(toastMSG2, {
+                    autoClose: 2000,
+                  });
+                };
+
+              });
         });
   }
 },
@@ -613,6 +722,7 @@ data(){
     receivedData5: null,
     receivedData6: null,
     receivedData7: null,
+    receivedData10: null,
     nroanular: null,
     giftcard: null,
     discounts: [],

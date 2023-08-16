@@ -19,7 +19,7 @@
                 <div class="btn-group">
                   <CartBTN :product="product"/>
                 </div>
-                <small class="text-muted"><i class="bi bi-currency-dollar"></i>{{ product.price }}</small>
+                <small class="text-muted"><i>Bs. </i>{{ product.price }}</small>
               </div>
             </div>
           </div>
@@ -41,6 +41,16 @@
     </div>
     <br><br>
 
+    <div id="app">
+      <CardComponent />
+    </div>
+    <button type="button" @click="enviarPaquete" class="btn btn-info btn-block btn-lg">
+      Enviar Paquete
+    </button><br><br>
+    <button type="button" @click="enviarPaqueteCafc" class="btn btn-info btn-block btn-lg">
+      Enviar Paquete CAFC
+    </button>
+
   </div>
   <div><pre>{{ receivedData8 }}</pre></div>
   <div id="app">
@@ -57,17 +67,21 @@ import CartBTN from '../components/CartBTN.vue'
 import axios from "axios";
 import {toast} from "vue3-toastify";
 import PingComponent from "../components/PingComponent.vue";
+import CardComponent from "../components/CardComponent.vue";
+
 export default {
 
   setup() {
 
   },
-  components :{CartBTN, PingComponent},
+  components :{CartBTN, PingComponent, CardComponent},
   data(){
     return{
       buscaragregar: '',
       networkStatus: '',
       receivedData8: null,
+      motivoanular: null,
+      nroimprimir: null,
       products:[
         {id:1, name:'Primera medicina', price:10.25, descripcion: "primera"},
         {id:2, name:'Segunda medicina', price:15.30, descripcion: "segunda"},
@@ -125,6 +139,72 @@ export default {
     },
     onUpdateStatus(status) {
       this.networkStatus = status;
+    },
+    enviarPaquete(){
+      const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/on_line?proveedorKey=T1-N392010028-S0-P0';
+      const headers = { 'accept': 'application/json' };
+      let codigo;
+      axios.put(url, null,{headers},)
+          .then(response => {
+            this.receivedData6 = response.data;
+            if (this.receivedData6.messages == "Ya estaba en modo online" || this.receivedData6.ok == true) {
+              codigo = this.receivedData6.data.cufdEvento.codigoEvento;
+              console.log(codigo);
+              const url1 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/enviar';
+              const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+              axios.put(url1, { gestion: 2023, periodo: 8, proveedorKey: "T1-N392010028-S0-P0", codigoSector: 1, codigoEvento:codigo, cafc: "" }, {headers1})
+                  .then(responser => {
+                    this.receivedData7 = responser.data;
+                    if (this.receivedData7.ok == true && this.receivedData7.data > 0) {
+                      toast( "Paquete enviado", {
+                        autoClose: 2000,
+                      });
+                    } else {
+                      toast( "Paquete NO enviado", {
+                        autoClose: 2000,
+                      });
+                    };
+                  })
+            } else {
+              toast("No esta en modo online", {
+                autoClose: 2000,
+              });
+            };
+          });
+
+    },
+    enviarPaqueteCafc(){
+      const url = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/on_line?proveedorKey=T1-N392010028-S0-P0';
+      const headers = { 'accept': 'application/json' };
+      let codigo;
+      axios.put(url, null,{headers},)
+          .then(response => {
+            this.receivedData6 = response.data;
+            if (this.receivedData6.messages == "Ya estaba en modo online" || this.receivedData6.ok == true) {
+              codigo = this.receivedData6.data.cufdEvento.codigoEvento;
+              console.log(codigo);
+              const url1 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/enviar';
+              const headers1 = { 'accept': 'application/json', 'Content-Type': 'application/json;charset=UTF-8' };
+              axios.put(url1, { gestion: 2023, periodo: 8, proveedorKey: "T1-N392010028-S0-P0", codigoSector: 1, codigoEvento:codigo, cafc: "101FC6CC6CD7E" }, {headers1})
+                  .then(responser => {
+                    this.receivedData7 = responser.data;
+                    if (this.receivedData7.ok == true && this.receivedData7.data > 0) {
+                      toast( "Paquete enviado", {
+                        autoClose: 2000,
+                      });
+                    } else {
+                      toast( "Paquete NO enviado", {
+                        autoClose: 2000,
+                      });
+                    };
+                  })
+            } else {
+              toast("No esta en modo online", {
+                autoClose: 2000,
+              });
+            };
+          });
+
     }
   }
 

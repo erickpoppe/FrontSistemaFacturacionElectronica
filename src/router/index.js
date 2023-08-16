@@ -9,6 +9,8 @@ import Carto from "../views/Carto.vue";
 import Detalles from "../views/Detalles.vue";
 import Productos from "../views/Productos.vue";
 import Datos from "../views/Datos.vue";
+import LoginPage from "../views/LoginPage.vue"
+import DashboardPage from "../views/DashboardPage.vue";
 const routes = [
     {
         path:'/',
@@ -34,12 +36,14 @@ const routes = [
             {
                 path:'/farmacia',
                 name:'Farmacia',
-                component:Farmacia
+                component:Farmacia,
+                props: (route) => ({ username: route.query.username })
             },
             {
                 path:'/sclinicos',
                 name:'Sclinicos',
-                component:Sclinicos
+                component:Sclinicos,
+                props: (route) => ({ username: route.query.username })
             },
             {
                 path:'/carto',
@@ -61,6 +65,17 @@ const routes = [
                 path:'/datos',
                 name:'Datos',
                 component:Datos
+            },
+            {
+                path:'/login',
+                name:'Login',
+                component:LoginPage
+            },
+            {
+                path:'/dashboard',
+                name:'Dashboard',
+                component:DashboardPage,
+                props: (route) => ({ username: route.query.username })
             }
         ]
     },
