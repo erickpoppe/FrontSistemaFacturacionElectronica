@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="dashboard-container">
     <h2>Dashboard</h2>
     <p>Bienvenido a este sitio, {{ username }}!</p>

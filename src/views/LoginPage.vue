@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h2>Login</h2>
+    <h2>Login Farmacia</h2>
     <form @submit.prevent="login">
       <input v-model="username"  />
       <input v-model="password" type="password"  />

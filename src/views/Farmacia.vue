@@ -102,7 +102,8 @@ export default {
                 autoClose: 2000,
               });
               const vectorData = this.receivedData8.data;
-              const elementToMatch = vectorData.find(item => item.codigo === this.buscaragregar);
+              const elementToMatch = this.products.filter(product => product.descripcion.includes(this.buscaragregar));
+
               if (elementToMatch) {
                 const codigo = elementToMatch.codigo;
                 const name = elementToMatch.nombre;

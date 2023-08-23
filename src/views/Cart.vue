@@ -46,14 +46,7 @@
               <div class="mb-3">
                 <label for="tarjeta" class="form-label">Número de tarjeta:</label>
                 <input id="tarjeta" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx"></div>
-              <button type="button"  @click="pagoTarjeta" class="btn btn-info btn-block btn-lg">
-                Pago con tarjeta
-              </button><br><br>
-              <div class="mb-3">
-                <h5>PAGO POR TRANSFERENCIA BANCARIA</h5>
-                <button type="button"  @click="pagoTransferencia" class="btn btn-info btn-block btn-lg">
-                  Pago por transferencia bancaria
-                </button><br><br> </div>
+
             </div>
             <div class="col-lg-5">
 
@@ -92,17 +85,22 @@
                     </select>
                   </div>
                   <div class="mb-3">
-                    <label for="numerofactura" class="form-label">Numero Factura</label>
-                    <input type="number" class="form-control" id="numerofactura" v-model="formData.numerofactura">
-                  </div>
-                  <div class="mb-3">
                     <label for="email" class="form-label">Codigo de cliente</label>
                     <input type="email" class="form-control" id="email" v-model="formData.email">
                   </div>
                   <div>
                     <label for="complemento" class="form-label">Complemento</label>
                     <input type="text" class="form-control" id="complemento" v-model="formData.complemento">
-                  </div><br><br>
+                  </div><br>
+                  <div class="mb-3">
+                    <label for="tipoMetodoPago" class="form-label">Tipo de método de pago</label>
+                    <select id="tipoMetodoPago" class="form-select" v-model="tipoMetodoPago">
+                      <option :value="1">Efectivo</option>
+                      <option :value="2">Tarjeta</option>
+                      <option :value="7">Transferencia bancaria</option>
+                      <option :value="10">Tarjeta y Efectivo</option>
+                    </select>
+                  </div>
 
                   <button type="button"  @click="facturarAhora" class="btn btn-info btn-block btn-lg">
                     Facturar Sin Descuento
@@ -184,9 +182,16 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import PingComponent from "../components/PingComponent.vue";
+import {ref} from "vue";
 
 export default{
 components :{CartAddRemove, PingComponent},
+setup(){
+  const tipoMetodoPago = ref(1);
+  return {
+    tipoMetodoPago
+  };
+},
 methods: {
   removeItem(item) {
     this.$store.commit('addRemoveCart', {product: item, toAdd: false})
@@ -608,7 +613,33 @@ methods: {
           const url2 = 'https://py-kc-rest-v1-xkqvciodha-rj.a.run.app/oper/facturacion/emitir?codigoSector=1';
           const headers2 = { 'accept': 'application/json', 'Content-Type': 'application/json' };
           let toastMSG2;
-          this.receivedData2.data.cabecera.codigoMetodoPago = 1;
+          this.receivedData2.data.cabecera.codigoMetodoPago = this.tipoMetodoPago;
+          if (this.receivedData2.data.cabecera.codigoMetodoPago == 2) {
+            const tarjetaInput = document.getElementById('tarjeta');
+            const numeroTarjeta = tarjetaInput.value.trim();
+
+            if (numeroTarjeta.length < 13 || numeroTarjeta.length > 19) {
+              toast("Número de tarjeta inválido. Debe contener entre 13 y 19 dígitos.", {
+                autoClose: 2000,
+              });
+              return;
+            }
+
+            const maskedNumeroTarjeta = numeroTarjeta.substring(0, 4) + '0'.repeat(numeroTarjeta.length - 8) + numeroTarjeta.substring(numeroTarjeta.length - 4);
+
+
+
+            this.receivedData2.data.cabecera.codigoMetodoPago = 2;
+            this.receivedData2.data.cabecera.numeroTarjeta = maskedNumeroTarjeta;
+
+            toast("Número de tarjeta obtenido y enmascarado.", {
+              autoClose: 2000,
+            });
+
+            // Clear the input field after successful payment
+            tarjetaInput.value = '';
+
+          };
           axios.post(url2, this.receivedData2, { headers2 })
               .then(response => {
                 this.receivedData5 = response.data;
